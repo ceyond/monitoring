@@ -16,3 +16,12 @@ scrape_configs:
       - source_labels: ['__meta_docker_container_name']
         target_label: 'container'
 
+  - job_name: springboot-host
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: springboot
+          app: voiceinvoicesapi
+          __path__: /Users/firex/Projects/Ceyond/voice-invoices/log/voice/invoices/log.log
+

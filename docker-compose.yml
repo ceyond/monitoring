@@ -7,8 +7,11 @@ services:
     container_name: prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alerts:/etc/prometheus/alerts
     ports:
       - "9090:9090"
+    networks:
+      - monitoring_net
 
   grafana:
     image: grafana/grafana:latest
@@ -18,6 +21,8 @@ services:
     depends_on:
       - prometheus
       - loki
+    networks:
+      - monitoring_net
 
   loki:
     image: grafana/loki:2.9.3
@@ -25,6 +30,8 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     ports:
       - "3100:3100"
+    networks:
+      - monitoring_net
 
   promtail:
     image: grafana/promtail:2.9.3
@@ -36,4 +43,10 @@ services:
     command: -config.file=/etc/promtail/config.yml
     depends_on:
       - loki
+    networks:
+      - monitoring_net
+
+networks:
+  monitoring_net:
+    external: true
 

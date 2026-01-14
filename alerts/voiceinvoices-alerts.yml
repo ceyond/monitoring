@@ -1,0 +1,14 @@
+groups:
+- name: voiceinvoices-api
+  rules:
+
+  - alert: VoiceInvoicesApiDown
+    expr: sum(up{job="springboot", application="voiceinvoicesapi"}) == 0 
+    for: 1m
+    labels:
+      app: voiceinvoicesapi
+      severity: critical
+    annotations:
+      summary: "voiceinvoicesapi is DOWN"
+      description: "Prometheus cannot scrape voiceinvoicesapi for more than 1 minute."
+
